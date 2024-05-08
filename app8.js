@@ -10,9 +10,9 @@ const rl = readline.createInterface({
 rl.question('Ingresa una palabra: ', (palabra) => {
   const palabraInvertida = palabra.split('').reverse().join('');
   if (palabra === palabraInvertida) {
-    console.log('La palabra es un palíndromo.');
+    console.log(`La palabra ${palabra} es un palíndromo.`);
   } else {
-    console.log('La palabra no es un palíndromo.');
+    console.log(`La palabra ${palabra} no es un palíndromo.`);
   }
   rl.close();
 });
