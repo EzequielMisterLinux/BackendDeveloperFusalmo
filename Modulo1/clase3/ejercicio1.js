@@ -1,22 +1,21 @@
-const readline = require('readline');
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-function determinarSigno(numero) {
-    if (numero > 0) {
-        return "positivo";
-    } else if (numero < 0) {
-        return "negativo";
-    } else {
-        return "0";
-    }
-}
-
-rl.question("Ingrese un numero: ", (numero) => {
-    const signo = determinarSigno(parseFloat(numero));
-    console.log(`El número es ${signo}`);
-    rl.close(); 
-});
+function determinarSigno(rl, mostrarMenu) {
+    rl.question("Ingrese un numero: ", (numero) => {
+      const num = parseFloat(numero);
+  
+      if (!isNaN(num)) {
+        if (num > 0) {
+          console.log(`El número ${num} es positivo.`);
+        } else if (num < 0) {
+          console.log(`El número ${num} es negativo.`);
+        } else {
+          console.log("El número es 0.");
+        }
+        mostrarMenu(); 
+      } else {
+        console.log("Por favor, ingrese un número válido.");
+        mostrarMenu(); 
+      }
+    });
+  }
+  
+  module.exports = determinarSigno;
