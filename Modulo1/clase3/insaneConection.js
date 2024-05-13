@@ -33,3 +33,4 @@ app.get('/estudiantes', async (req, res) => {
 app.listen(3000, () => {
   console.log('Servidor iniciado en http://localhost:3000');
 });
+
