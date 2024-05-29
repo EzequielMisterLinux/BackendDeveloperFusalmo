@@ -1,24 +1,20 @@
 import express from 'express';
-import readline from 'readline';
 import axios from 'axios'; 
-
-const interfaz = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(express.json());
 
 let tasks = [];
 
-app.get('/task', (req, res) => {
+app.get('/tasks', (req, res) => {
     res.json(tasks);
 });
 
-app.post('/task', (req, res) => {
+app.post('/tasks', (req, res) => {
     const newTask = {
         id: tasks.length + 1,
         title: req.body.title,
@@ -28,7 +24,7 @@ app.post('/task', (req, res) => {
     res.status(201).json(newTask);
 });
 
-app.get('/task/:id', (req, res) => {
+app.get('/tasks/:id', (req, res) => {
     const taskId = parseInt(req.params.id);
     const task = tasks.find(t => t.id === taskId);
 
@@ -39,7 +35,7 @@ app.get('/task/:id', (req, res) => {
     }
 });
 
-app.put('/task/:id', (req, res) => {
+app.put('/tasks/:id', (req, res) => {
     const taskId = parseInt(req.params.id);
     const task = tasks.find(t => t.id === taskId);
 
@@ -52,36 +48,18 @@ app.put('/task/:id', (req, res) => {
     }
 });
 
-app.delete('/task/:id', (req, res) => {
+app.delete('/tasks/:id', (req, res) => {
     const taskId = parseInt(req.params.id);
     const taskIndex = tasks.findIndex(t => t.id === taskId);
 
     if (taskIndex !== -1) {
         tasks.splice(taskIndex, 1);
-        res.status(204).send('registro eliminado');
+        res.status(204).send('Registro eliminado');
     } else {
         res.status(404).send('No se eliminó la tarea');
     }
 });
 
 app.listen(port, () => {
-    console.log(`Servidor corriendo en la URL http://localhost:${port}/task`);
-    promptForTaskTitle(); 
+    console.log(`Servidor corriendo en la URL http://localhost:${port}/tasks`);
 });
-
-function promptForTaskTitle() {
-    interfaz.question("Insert your title task: ", (taskTitle) => {
-        axios.post('http://localhost:3000/task', {
-            title: taskTitle
-        })
-        .then(response => {
-            console.log('Task added:', response.data);
-        })
-        .catch(error => {
-            console.error('Error adding task:', error);
-        })
-        .finally(() => {
-            interfaz.close(); 
-        });
-    });
-}
